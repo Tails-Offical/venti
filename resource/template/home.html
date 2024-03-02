@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GreyPoints</title>
+    <link href="static/css/bootstrap-4.4.1.css" rel="stylesheet">
+    <!-- footer置底 -->
+    <style>
+      html, body {
+        height: 100%;
+      }
+      .main-content {
+        flex: 1 0 auto;
+      }
+      .footer {
+        flex-shrink: 0;
+      }
+    </style>
+    <!-- 悬停下拉 -->
+    <style>
+      .navbar .dropdown:hover .dropdown-menu {
+          display: block;
+      }
+      </style>
+  </head>
+  <body class="d-flex flex-column">
+    <div class="main-content">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">GreyPoints</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Products
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">venti</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">eden</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Docs
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">venti</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">eden</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Community</a> 
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">About&nbsp;</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <section>
+      <div class="jumbotron text-center">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <h1>Venti has been released</h1>
+              <p>Venti is a Python Web scaffold that takes into account principles such as OCP, DIP, IoC, OTI, AOP, and DI.</p>
+              <p><a class="btn btn-primary btn-lg" href="#" role="button">Read More</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container mt-2">
+        <div class="row">
+          <div class="col-md-4 col-12">
+            <ul class="list-unstyled">
+              <li class="media">
+                <img class="mr-3" src="static/img/35X35.gif" alt="Generic placeholder image">
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">venti</h5>
+                  Venti is a Python Web scaffold that takes into account principles such as OCP, DIP, IoC, OTI, AOP, and DI.
+                  <br>
+                  <a href="#"> &gt;&gt;&gt; Read More </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-12">
+            <ul class="list-unstyled">
+              <li class="media">
+                <img class="mr-3" src="static/img/35X35.gif" alt="Generic placeholder image">
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">eden</h5>
+                  (Planned)Eden is a learning framework.
+                  <br>
+                  <a href="#"> &gt;&gt;&gt; Read More </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+</div>
+
+    <footer class="text-center">
+      <hr>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p>©2024 GreyPoints</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="static/js/jquery-3.4.1.min.js"></script>
+    <script src="static/js/popper.min.js"></script>
+    <script src="static/js/bootstrap-4.4.1.js"></script>
+  </body>
+</html>

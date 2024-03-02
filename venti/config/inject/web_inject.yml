@@ -1,0 +1,8 @@
+WebController:
+  ij:
+    - 'venti.service.implements.web_service_implement.WebServiceImplement'
+    - 'venti.service.implements.web_service_implement.HelloWebServiceImplement'
+WebService:
+  ij:
+    - 'venti.repository.implements.web_repository_implement.WebRepositoryImplement'
+    - 'venti.repository.implements.web_repository_implement.HelloWebRepositoryImplement'
