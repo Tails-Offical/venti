@@ -1,0 +1,8 @@
+tornado
+httpx
+httpx[http2]
+psutil
+pystray
+apscheduler
+pyinstaller
+data/venti/venti-0.0.1-py3-none-any.whl

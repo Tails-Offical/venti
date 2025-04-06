@@ -1,0 +1,8 @@
+project_greypoints
+data/greypoints
+VentiGreypoints.py
+**/__pycache__
+.venv
+**/.venv
+test.py
+tmanage.py
