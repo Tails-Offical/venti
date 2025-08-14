@@ -1,8 +1,7 @@
-project_greypoints
-data/greypoints
-VentiGreypoints.py
 **/__pycache__
 .venv
-**/.venv
+lab
 test.py
-tmanage.py
+dist
+build
+VentiDemo.spec

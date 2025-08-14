@@ -1,10 +1,8 @@
 import argparse
 import os
-import shutil
 
-class VmanageExecute(object):
+class VmanageExecute:
     def lib(self, args, vpath):
-        self.clean(vpath)
         if vsys == "nt":
             os.system('python -m venv {}'.format(os.path.join(vpath,'.venv')))
             os.system(os.path.join(vpath,".venv","Scripts","python.exe -m pip install --upgrade pip"))
@@ -13,21 +11,6 @@ class VmanageExecute(object):
             os.system('python -m venv {}'.format(os.path.join(vpath,'.venv')))
             os.system(os.path.join(vpath,".venv","bin","python -m pip install --upgrade pip"))
             os.system(os.path.join(vpath,".venv","bin","pip3") + " install -r requirements.txt")
-
-    def clean(self, vpath):
-        for root, dirs, files in os.walk(vpath):
-            if ".venv" in root:
-                continue
-            if "__pycache__" in dirs:
-                pycache_dir = os.path.join(root, "__pycache__")
-                shutil.rmtree(pycache_dir)
-                print(f"Deleted: {pycache_dir}")
-        try:
-            shutil.rmtree(os.path.join(vpath, "dist"))
-            shutil.rmtree(os.path.join(vpath, "build"))
-            os.remove(os.path.join(vpath, "VentiTest.spec"))
-        except Exception as e:
-            print(e)
 
     def show(self, args, vpath):
         total_projects = 0
@@ -58,7 +41,7 @@ class VmanageExecute(object):
                                                                                                     target,
                                                                                                     target))
         else:
-            print("help : python vmanage.py build test")
+            print("python vmanage.py build demo")
 
 class Vmanage():
     def __init__(self, vpath, vsys):
@@ -74,13 +57,9 @@ class Vmanage():
         parser_lib = subparsers.add_parser("lib")
         parser_lib.set_defaults(func=lambda args: self.ve.lib(args, self.vpath))
 
-        # clean
-        parser_clean = subparsers.add_parser("clean")
-        parser_clean.set_defaults(func=lambda args: self.ve.clean(self.vpath))
-
         # show
         parser_show = subparsers.add_parser("show")
-        parser_show.set_defaults(func=lambda args: self.ve.show(args, self.vpath, self.vsys))
+        parser_show.set_defaults(func=lambda args: self.ve.show(args, self.vpath))
 
         # build
         parser_build = subparsers.add_parser("build")
