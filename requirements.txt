@@ -1,8 +1,10 @@
 tornado
 httpx
 httpx[http2]
+lxml
+PyYAML
 psutil
 pystray
-apscheduler
+loguru
+APScheduler
 pyinstaller
-data/venti/venti-0.0.1-py3-none-any.whl
