@@ -1,18 +1,21 @@
 # -*- coding: UTF-8 -*-
-from tornado.web import RequestHandler
+import tornado.web
+from project_demo.app_web.controller.controller_base import BaseHandler
 from project_demo.app_web.service.service_user import ServiceUser
 
-class BaseHandler(RequestHandler):
-    def initialize(self, venti_queue, venti_dict, venti_event, venti_lock, path, stype, app_web_logger):
-        self.venti_queue = venti_queue
-        self.venti_dict = venti_dict
-        self.venti_event = venti_event
-        self.venti_lock = venti_lock
-        self.path = path
-        self.stype = stype
-        self.app_web_logger = app_web_logger
-        self.su = ServiceUser(self.app_web_logger)
-
 class User(BaseHandler):
-    async def get(self):
-        self.write(str(self.su.get_user()))
+    def initialize(self, osname, path, venti_plock, venti_pevent, venti_pqueue, venti_pdict, web_logger):
+        super().initialize(osname, path, venti_plock, venti_pevent, venti_pqueue, venti_pdict, web_logger)
+        self.su = ServiceUser(web_logger)
+
+    @tornado.web.authenticated
+    async def post(self):
+        current_user = self.get_current_user()
+        username = current_user.get("name")
+        userid = current_user.get("userid")
+        self.write({
+            "msg": "success", 
+            "user": username,
+            "userid": userid,
+            "data": str(self.su.get_user())
+        })

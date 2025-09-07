@@ -1,30 +1,34 @@
 # -*- coding: UTF-8 -*-
-from multiprocessing import Process
+from project_demo.app_concurrent.AppConcurrent import AppConcurrent
+from project_demo.app_parallel.AppParallel import AppParallel
 from project_demo.app_web.AppWeb import AppWeb
-from project_demo.app_cron.AppCron import AppCron
 
 class ProjectDemo:
-    def __init__(self, venti_queue, venti_dict, venti_event, venti_lock, path, stype):
-        self.venti_queue = venti_queue
-        self.venti_dict = venti_dict
-        self.venti_event = venti_event
-        self.venti_lock = venti_lock
+    def __init__(self, osname, path, processes, venti_plock, venti_pevent, venti_pqueue, venti_pdict):
+        self.osname = osname
         self.path = path
-        self.stype = stype
+        self.processes = processes
+        self.venti_plock = venti_plock
+        self.venti_pevent = venti_pevent
+        self.venti_pqueue = venti_pqueue
+        self.venti_pdict = venti_pdict
+
+    def app_concurrent(self):
+        AppConcurrent.app(self.osname, self.path, self.processes, self.venti_plock, self.venti_pevent, self.venti_pqueue, self.venti_pdict)
+
+    def app_parallel(self):
+        AppParallel.app(self.osname, self.path, self.processes, self.venti_plock, self.venti_pevent, self.venti_pqueue, self.venti_pdict)
+
+    def app_tray(self):
+        if self.osname == 'nt':
+            from project_demo.app_tray.AppTray import AppTray
+            AppTray.app(self.osname, self.path, self.processes, self.venti_plock, self.venti_pevent, self.venti_pqueue, self.venti_pdict)
 
     def app_web(self):
-        app_web = AppWeb(self.venti_queue, self.venti_dict, self.venti_event, self.venti_lock, self.path, self.stype)
-        app_web.controller()
-
-    def app_cron(self):
-        app_cron = AppCron(self.venti_queue, self.venti_dict, self.venti_event, self.venti_lock, self.path, self.stype)
-        app_cron.cron()
+        AppWeb.app(self.osname, self.path, self.processes, self.venti_plock, self.venti_pevent, self.venti_pqueue, self.venti_pdict)
 
     def project(self):
-        app_web = Process(target = self.app_web)
-        app_cron = Process(target = self.app_cron)
-        app_web.start()
-        app_cron.start()
-        self.venti_event.wait()
-        app_web.join()
-        app_cron.join()
+        self.app_concurrent()
+        self.app_parallel()
+        self.app_tray()
+        self.app_web()

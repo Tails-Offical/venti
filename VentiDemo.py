@@ -1,54 +1,42 @@
 # -*- coding: UTF-8 -*-
 import os
-import subprocess
-from multiprocessing import Manager, Process, freeze_support
-from PIL import Image
-from pystray import MenuItem, Icon
+from sys import version_info
+from multiprocessing import Manager, freeze_support
 from project_demo.ProjectDemo import ProjectDemo
 
-class VentiMain:
-    def __init__(self, venti_queue, venti_dict, venti_event, venti_lock, stype):
-        self.path = os.getcwd()
-        self.venti_queue = venti_queue
-        self.venti_dict = venti_dict
-        self.venti_event = venti_event
-        self.venti_lock = venti_lock
-        self.stype = stype
-
-    def app_cron_log(self):
-        subprocess.call(["notepad", os.path.join(self.path, "data", "project_demo", "log", "app_cron.log")])
-
-    def app_web_log(self):
-        subprocess.call(["notepad", os.path.join(self.path, "data", "project_demo", "log", "app_web.log")])
-
-    def tray_quit(self, icon):
-        self.venti_event.set()
-        icon.stop()
-
-    def tray(self):
-        if self.stype == "nt":
-            self.image = Image.open(os.path.join(self.path, "data", "project_demo", "tray", "ico", "ico.png"))
-            self.menu = (MenuItem("app_cron_log", self.app_cron_log), MenuItem("app_web_log", self.app_web_log), MenuItem("Quit", self.tray_quit))
-            self.icon = Icon("Venti", self.image, "Venti", self.menu)
-            self.icon.run()
+class VentiDemo:
+    def __init__(self, osname, path, processes, venti_plock, venti_pevent, venti_pqueue, venti_pdict):
+        self.osname = osname
+        self.path = path
+        self.processes = processes
+        self.venti_plock = venti_plock
+        self.venti_pevent = venti_pevent
+        self.venti_pqueue = venti_pqueue
+        self.venti_pdict = venti_pdict
 
     def project_demo(self):
-        ProjectDemo(self.venti_queue, self.venti_dict, self.venti_event, self.venti_lock, self.path, self.stype).project()
+        ProjectDemo(self.osname, self.path, self.processes, self.venti_plock, self.venti_pevent, self.venti_pqueue, self.venti_pdict).project()
 
     def main(self):
-        p_tray = Process(target = self.tray)
-        p_tray.start()
         self.project_demo()
-        self.venti_event.wait()
-        p_tray.join()
+        for ps in self.processes:
+            ps.start()
+        self.venti_pevent.wait()
+        for pf in self.processes:
+            pf.join()
 
 if __name__ == "__main__":
-    stype = os.name
-    if stype == "nt":
-        freeze_support()
-    with Manager() as manager:
-        venti_queue = manager.Queue()
-        venti_dict = manager.dict()
-        venti_event = manager.Event()
-        venti_lock = manager.Lock()
-        VentiMain(venti_queue, venti_dict, venti_event, venti_lock, stype).main()
+    if version_info[:2] != (3, 12):
+        print("not running on Python 3.12 version, this scenario has not been validated for feasibility")
+    else:
+        osname = os.name
+        path = os.getcwd()
+        processes = []
+        if osname == "nt":
+            freeze_support()
+        with Manager() as manager:
+            venti_plock = manager.Lock()
+            venti_pevent = manager.Event()
+            venti_pqueue = manager.Queue()
+            venti_pdict = manager.dict()
+            VentiDemo(osname, path, processes, venti_plock, venti_pevent, venti_pqueue, venti_pdict).main()
