@@ -2,7 +2,7 @@
 import json
 from project_demo.app_web.controller.controller_base import BaseHandler
 
-class Login(BaseHandler):
+class LoginHandler(BaseHandler):
     async def post(self):
         request_data = json.loads(self.request.body)
         userid = request_data.get("userid")

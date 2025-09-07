@@ -3,7 +3,7 @@ import tornado.web
 from project_demo.app_web.controller.controller_base import BaseHandler
 from project_demo.app_web.service.service_user import ServiceUser
 
-class User(BaseHandler):
+class UserHandler(BaseHandler):
     def initialize(self, osname, path, venti_plock, venti_pevent, venti_pqueue, venti_pdict, web_logger):
         super().initialize(osname, path, venti_plock, venti_pevent, venti_pqueue, venti_pdict, web_logger)
         self.su = ServiceUser(web_logger)
