@@ -7,6 +7,7 @@ from tornado.platform.asyncio import AsyncIOMainLoop
 from multiprocessing import Process
 import uuid
 from venti.vlog import Vlog
+from project_demo.app_web.controller import controller_demo
 from project_demo.app_web.controller import controller_login
 from project_demo.app_web.controller import controller_user
 from project_demo.app_web.controller import controller_logout
@@ -24,6 +25,7 @@ class AppWeb:
         web_logger = Vlog.set_logger(os.path.join(self.path, 'data','project_demo','log','app_web.log'))
         application = Application(
             [
+                (r"/demo", controller_demo.DemoHandler, {"osname": self.osname, "path": self.path, "venti_pqueue": self.venti_pqueue, "venti_pdict": self.venti_pdict, "venti_pevent": self.venti_pevent, "venti_plock": self.venti_plock,  "web_logger": web_logger}),
                 (r"/login", controller_login.LoginHandler, {"osname": self.osname, "path": self.path, "venti_pqueue": self.venti_pqueue, "venti_pdict": self.venti_pdict, "venti_pevent": self.venti_pevent, "venti_plock": self.venti_plock,  "web_logger": web_logger}),
                 (r"/logout", controller_logout.LogoutHandler, {"osname": self.osname, "path": self.path, "venti_pqueue": self.venti_pqueue, "venti_pdict": self.venti_pdict, "venti_pevent": self.venti_pevent, "venti_plock": self.venti_plock,  "web_logger": web_logger}),
                 (r"/user", controller_user.UserHandler, {"osname": self.osname, "path": self.path, "venti_pqueue": self.venti_pqueue, "venti_pdict": self.venti_pdict, "venti_pevent": self.venti_pevent, "venti_plock": self.venti_plock,  "web_logger": web_logger})
