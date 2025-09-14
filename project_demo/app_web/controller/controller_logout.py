@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from project_demo.app_web.controller.controller_base import BaseHandler
 
-class LogoutHandler(BaseHandler):
+class ControllerLogout(BaseHandler):
     async def post(self):
-        self.remove_session()
-        self.write({"msg": "logged out"})
+        self.remove_current_user()
+        self.write({"msg": "logout"})

@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 import time
-import uuid
 from tornado.web import RequestHandler
 
 sessions = {}
@@ -15,35 +14,34 @@ class BaseHandler(RequestHandler):
         self.venti_pdict = venti_pdict
         self.web_logger = web_logger
 
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "http://localhost:9750")
+        self.set_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        self.set_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+        self.set_header("Access-Control-Allow-Credentials", "true")
+
+    def options(self):
+        self.set_status(204)
+        self.finish()
+
+    def remove_current_user(self):
+        session_id = self.get_secure_cookie('session_id')
+        if session_id:
+            session_id = session_id.decode('utf-8')
+            sessions.pop(session_id, None)
+        self.clear_cookie('session_id')
+
     def get_current_user(self):
-        token = self.get_secure_cookie("token")
-        if token:
-            token = token.decode('utf-8')
-            session_data = sessions.get(token)
+        session_id = self.get_secure_cookie('session_id')
+        if session_id:
+            session_id = session_id.decode('utf-8')
+            session_data = sessions.get(session_id)
             if session_data:
-                if time.time() - session_data.get("time", 0) > 60:
-                    del sessions[token]
-                    return None
-                # active time
-                session_data["time"] = time.time()
-                return session_data
+                if session_data.get('expires_time', 0) > time.time():
+                    formatted = session_data.copy()
+                    formatted['login_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(session_data['login_time']))
+                    formatted['expires_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(session_data['expires_time']))
+                    return formatted
+                else:
+                    sessions.pop(session_id, None)
         return None
-
-    def create_session(self, userid, username):
-        token = str(uuid.uuid4())
-        sessions[token] = {
-            "userid": userid,
-            "name": username,
-            "time": time.time()
-        }
-        self.set_secure_cookie("token", token)
-        return token
-
-    def remove_session(self):
-        token = self.get_secure_cookie("token")
-        if token:
-            token = token.decode('utf-8')
-            if token in sessions:
-                del sessions[token]
-        self.clear_cookie("token")
-        return True

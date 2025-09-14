@@ -2,10 +2,9 @@
 import sqlite3
 
 class DaoSqlite3:
-    def __init__(self, sapp_web_logger):
+    def __init__(self):
         self.conn = sqlite3.connect(':memory:')
         self.conn.row_factory = sqlite3.Row
-        self.sapp_web_logger = sapp_web_logger
 
     def get_user(self):
         self.conn.execute('''CREATE TABLE IF NOT EXISTS user (
