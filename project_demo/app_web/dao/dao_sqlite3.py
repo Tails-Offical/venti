@@ -7,12 +7,11 @@ class DaoSqlite3:
         self.conn.row_factory = sqlite3.Row
 
     def get_user(self):
-        self.conn.execute('''CREATE TABLE IF NOT EXISTS user (
+        self.conn.execute('''CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT
         )''')
-        self.conn.execute("INSERT INTO user (name) VALUES ('venti')")
-        self.conn.execute("INSERT INTO user (name) VALUES ('tails')")
+        self.conn.execute("INSERT INTO users (name) VALUES ('venti')")
         self.conn.commit()
-        cursor = self.conn.execute('SELECT * FROM user')
+        cursor = self.conn.execute('SELECT * FROM users')
         return [dict(row) for row in cursor]

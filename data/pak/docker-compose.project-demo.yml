@@ -2,7 +2,7 @@ services:
   app:
     container_name: project-demo
     build:
-      context: ../../..
+      context: ../..
       dockerfile: data/project_demo/pak/Dockerfile.project-demo
     ports:
       - "9750:9750"
@@ -24,7 +24,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ../../../data/project_demo/redis:/data
+      - ../../data/project_demo/redis:/data
     networks:
       - project-demo-network
     restart: unless-stopped
@@ -39,7 +39,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ../../../data/project_demo/postgres:/var/lib/postgresql/data
+      - ../../data/project_demo/postgres:/var/lib/postgresql/data
     networks:
       - project-demo-network
     restart: unless-stopped
@@ -60,7 +60,7 @@ services:
     ports:
       - "9094:9094"
     volumes:
-      - ../../../data/project_demo/kafka:/tmp/kraft-combined-logs
+      - ../../data/project_demo/kafka:/tmp/kraft-combined-logs
     networks:
       - project-demo-network
     restart: unless-stopped
