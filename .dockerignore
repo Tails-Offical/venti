@@ -1,0 +1,7 @@
+**/__pycache__
+.venv
+lab
+test.py
+dist
+build
+VentiDemo.spec

@@ -1,0 +1,70 @@
+services:
+  app:
+    container_name: project-demo
+    build:
+      context: ../..
+      dockerfile: data/project_demo/pak/Dockerfile.project-demo
+    ports:
+      - "9750:9750"
+    depends_on:
+      - redis
+      - postgres
+      - kafka
+    environment:
+      - REDIS_URL=redis://project-demo-redis:6379
+      - POSTGRES_URL=postgresql://postgres:password@project-demo-postgres:5432/project_demo
+      - KAFKA_BOOTSTRAP_SERVERS=project-demo-kafka:9092
+    networks:
+      - project-demo-network
+    restart: unless-stopped
+
+  redis:
+    container_name: project-demo-redis
+    image: redis:8.0.3-bookworm
+    ports:
+      - "6379:6379"
+    volumes:
+      - ../../data/project_demo/redis:/data
+    networks:
+      - project-demo-network
+    restart: unless-stopped
+
+  postgres:
+    container_name: project-demo-postgres
+    image: postgres:16.6-alpine
+    environment:
+      POSTGRES_DB: project_demo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../../data/project_demo/postgres:/var/lib/postgresql/data
+    networks:
+      - project-demo-network
+    restart: unless-stopped
+
+  kafka:
+    container_name: project-demo-kafka
+    image: apache/kafka:4.1.0
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@project-demo-kafka:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://project-demo-kafka:9092,CONTROLLER://project-demo-kafka:9093,PLAINTEXT_HOST://0.0.0.0:9094'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://project-demo-kafka:9092,PLAINTEXT_HOST://localhost:9094'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+    ports:
+      - "9094:9094"
+    volumes:
+      - ../../data/project_demo/kafka:/tmp/kraft-combined-logs
+    networks:
+      - project-demo-network
+    restart: unless-stopped
+
+networks:
+  project-demo-network:
+    driver: bridge
