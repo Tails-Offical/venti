@@ -5,7 +5,12 @@ from lxml import etree
 class Vdata:
     @staticmethod
     def xml_find_key(xml_data, target):
-        root = etree.fromstring(xml_data) if isinstance(xml_data, str) else xml_data
+        if isinstance(xml_data, str):
+            root = etree.fromstring(xml_data.encode('utf-8'))
+        elif isinstance(xml_data, bytes):
+            root = etree.fromstring(xml_data)
+        else:
+            root = xml_data
         def get_xpath(element):
             path = []
             while element is not None:
@@ -22,7 +27,12 @@ class Vdata:
 
     @staticmethod
     def xml_find_value(xml_data, target):
-        root = etree.fromstring(xml_data) if isinstance(xml_data, str) else xml_data
+        if isinstance(xml_data, str):
+            root = etree.fromstring(xml_data.encode('utf-8'))
+        elif isinstance(xml_data, bytes):
+            root = etree.fromstring(xml_data)
+        else:
+            root = xml_data
         def get_xpath(element):
             path = []
             while element is not None:

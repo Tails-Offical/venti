@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 import os
-from sys import version_info
 from multiprocessing import Manager, freeze_support
 from project_demo.ProjectDemo import ProjectDemo
 
@@ -26,17 +25,14 @@ class VentiDemo:
             pf.join()
 
 if __name__ == "__main__":
-    if version_info[:2] != (3, 12):
-        print("not running on Python 3.12 version, this scenario has not been validated for feasibility")
-    else:
-        osname = os.name
-        path = os.getcwd()
-        processes = []
-        if osname == "nt":
-            freeze_support()
-        with Manager() as manager:
-            venti_plock = manager.Lock()
-            venti_pevent = manager.Event()
-            venti_pqueue = manager.Queue()
-            venti_pdict = manager.dict()
-            VentiDemo(osname, path, processes, venti_plock, venti_pevent, venti_pqueue, venti_pdict).main()
+    osname = os.name
+    path = os.getcwd()
+    processes = []
+    if osname == "nt":
+        freeze_support()
+    with Manager() as manager:
+        venti_plock = manager.Lock()
+        venti_pevent = manager.Event()
+        venti_pqueue = manager.Queue()
+        venti_pdict = manager.dict()
+        VentiDemo(osname, path, processes, venti_plock, venti_pevent, venti_pqueue, venti_pdict).main()

@@ -4,7 +4,7 @@
 
 # Version And Stage
 
-    V0.0.7 (2 Pre-Alpha)
+    V0.0.8 (2 Pre-Alpha)
 
 # Profile
 
